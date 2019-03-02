@@ -1,3 +1,9 @@
+/*--------------------------------------------------------------------------------------*/
+/* This code is basically an experiment in progress. The ultimate goal is to implement  */
+/* a class that abstracts an ESP8266 device plugged into the WiFi socket of the ST dev  */
+/* board for the STM32F769-DISCOVERY.                                                   */
+/*--------------------------------------------------------------------------------------*/
+
 #include <stdio.h>
 #include <string.h>
 #include <stm32f7xx_hal.h>
@@ -31,7 +37,7 @@ int main(void)
 	
 	HAL_Init();
  
-	ESP8266 device; // Note, this does call empty arg constructor
+	ESP8266 device; // Note, this does call empty arg constructor in C++
 
 	for (I=0; I < 1000; I++)
 	{
