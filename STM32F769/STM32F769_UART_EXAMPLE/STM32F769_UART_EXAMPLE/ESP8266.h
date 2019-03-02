@@ -10,6 +10,8 @@ class ESP8266
 private:
 	static bool clocks_initialized;
 	UART_HandleTypeDef UART_Handle = { };
+	DMA_HandleTypeDef DMA_Handle = { };
+	void InitDMA(DMA_HandleTypeDef * DMA_Handle);
 	void InitUART(UART_HandleTypeDef * UART_Handle);
 	void InitPin(uint32_t PinNumber);
 	void InitClocks();

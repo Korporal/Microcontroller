@@ -1,5 +1,8 @@
 #include <ESP8266.h>
 
+static DMA_HandleTypeDef * GlobalHandle;
+
+
 bool ESP8266::clocks_initialized = false;
 ESP8266::ESP8266()
 {
@@ -7,6 +10,7 @@ ESP8266::ESP8266()
 	InitPin(GPIO_PIN_12);
 	InitPin(GPIO_PIN_2);
 	InitUART(&UART_Handle);
+	//InitDMA(&DMA_Handle);
 }
 
 void ESP8266::InitClocks()
@@ -17,8 +21,31 @@ void ESP8266::InitClocks()
 	__UART5_CLK_ENABLE();
 	__GPIOC_CLK_ENABLE();
 	__GPIOD_CLK_ENABLE();
-
+	__DMA1_CLK_ENABLE();
+	
 	clocks_initialized = true;
+}
+void ESP8266::InitDMA(DMA_HandleTypeDef * DMA_Handle)
+{
+	DMA_Handle->Instance = DMA1_Stream7;
+	DMA_Handle->Init.Channel = DMA_CHANNEL_4;
+	DMA_Handle->Init.Direction = DMA_MEMORY_TO_PERIPH;
+	DMA_Handle->Init.PeriphInc = DMA_PINC_DISABLE;
+	DMA_Handle->Init.MemInc = DMA_MINC_ENABLE;
+	DMA_Handle->Init.Mode = DMA_CIRCULAR;
+	DMA_Handle->Init.Priority = DMA_PRIORITY_VERY_HIGH;
+	DMA_Handle->Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+	DMA_Handle->Init.MemDataAlignment = DMA_PDATAALIGN_BYTE;
+ 
+	if (HAL_DMA_Init(DMA_Handle) != HAL_OK)
+		asm("bkpt 255");
+	
+	__HAL_LINKDMA(&UART_Handle, hdmatx, *DMA_Handle);	
+	
+	GlobalHandle = DMA_Handle;
+	
+	NVIC_EnableIRQ(DMA1_Stream7_IRQn);
+
 }
 void ESP8266::InitUART(UART_HandleTypeDef * UART_Handle)
 {
@@ -32,6 +59,7 @@ void ESP8266::InitUART(UART_HandleTypeDef * UART_Handle)
 	
 	if (HAL_UART_Init(UART_Handle) != HAL_OK)
 		asm("bkpt 255");
+	
 }
 
 ESP8266::~ESP8266()
@@ -44,7 +72,7 @@ void ESP8266::InitPin(uint32_t PinNumber)
 	
 	switch (PinNumber)
 	{
-	case GPIO_PIN_12:
+	case GPIO_PIN_12: // TX
 		{
 			GPIO_Init.Pin = GPIO_PIN_12;
 			GPIO_Init.Mode = GPIO_MODE_AF_PP;
@@ -54,7 +82,7 @@ void ESP8266::InitPin(uint32_t PinNumber)
 			HAL_GPIO_Init(GPIOC, &GPIO_Init);
 			return;
 		}
-	case GPIO_PIN_2:
+	case GPIO_PIN_2: // RX
 		{
 			GPIO_Init.Pin = GPIO_PIN_2;
 			GPIO_Init.Mode = GPIO_MODE_AF_OD;
@@ -104,3 +132,21 @@ int ESP8266::ReceiveResponse(uint32_t Timeout)
 	return count;
 }
 
+extern "C" void DMA1_Stream7_IRQHandler()
+{
+	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_12, GPIO_PIN_SET);
+	HAL_DMA_IRQHandler(GlobalHandle);
+	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_12, GPIO_PIN_RESET);
+}
+
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
+{
+	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_10, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_10, GPIO_PIN_RESET);
+}
+ 
+void HAL_UART_TxHalfCpltCallback(UART_HandleTypeDef *huart)
+{
+	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_11, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_11, GPIO_PIN_RESET);
+}
