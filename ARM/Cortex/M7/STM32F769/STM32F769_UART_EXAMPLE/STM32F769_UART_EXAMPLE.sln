@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.329
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "STM32F769_UART_EXAMPLE", "STM32F769_UART_EXAMPLE\STM32F769_UART_EXAMPLE.vcxproj", "{B78BFC64-9AE9-4141-BE34-24D92836F953}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|VisualGDB = Debug|VisualGDB
+		Release|VisualGDB = Release|VisualGDB
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B78BFC64-9AE9-4141-BE34-24D92836F953}.Debug|VisualGDB.ActiveCfg = Debug|VisualGDB
+		{B78BFC64-9AE9-4141-BE34-24D92836F953}.Debug|VisualGDB.Build.0 = Debug|VisualGDB
+		{B78BFC64-9AE9-4141-BE34-24D92836F953}.Release|VisualGDB.ActiveCfg = Release|VisualGDB
+		{B78BFC64-9AE9-4141-BE34-24D92836F953}.Release|VisualGDB.Build.0 = Release|VisualGDB
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0E899D96-D31B-4A7A-A4A1-EEF133E53F1D}
+	EndGlobalSection
+EndGlobal
