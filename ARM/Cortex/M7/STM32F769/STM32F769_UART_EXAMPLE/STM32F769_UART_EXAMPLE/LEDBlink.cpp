@@ -17,6 +17,7 @@
 //#endif
 
 extern "C" void SysTick_Handler(void);
+extern "C" void UART5_IRQHandler();
 
 void InitPin(uint32_t PinNumber);
 void InitUART(UART_HandleTypeDef * UART_Handle);
@@ -40,7 +41,8 @@ int main(void)
 	
 	HAL_Init();
  
-
+	NVIC_EnableIRQ(UART5_IRQn);
+	
 	for (I=0; I < 1000; I++)
 	{
 		status = device.SendCommand("AT");
@@ -93,15 +95,16 @@ bool ContainsOK(uint8_t * Buffer, int len)
 	return false;
 }
 
+void UART5_IRQHandler()
+{
+	//HAL_GPIO_WritePin(GPIOC, GPIO_PIN_12, GPIO_PIN_SET); // FOR USE BY ANALYZER in original article
+	HAL_UART_IRQHandler(&device.UART_Handle);
+	//HAL_GPIO_WritePin(GPIOC, GPIO_PIN_12, GPIO_PIN_RESET); // FOR USE BY ANALYZER in original article
+}
+
 void SysTick_Handler(void)
 {
 	HAL_IncTick();
 	HAL_SYSTICK_IRQHandler();
 }
 
-extern "C" void USART2_IRQHandler()
-{
-	//HAL_GPIO_WritePin(GPIOC, GPIO_PIN_12, GPIO_PIN_SET); // FOR USE BY ANALYZER in original article
-	HAL_UART_IRQHandler(&device.UART_Handle);
-	//HAL_GPIO_WritePin(GPIOC, GPIO_PIN_12, GPIO_PIN_RESET); // FOR USE BY ANALYZER in original article
-}

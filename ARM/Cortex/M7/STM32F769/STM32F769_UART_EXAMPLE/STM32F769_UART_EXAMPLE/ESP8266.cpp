@@ -137,7 +137,7 @@ HAL_StatusTypeDef ESP8266::SendCommand(const char * Text)
 	buffer[len] = CR;
 	buffer[len + 1] = LF;
 	
-	return HAL_UART_Transmit(&UART_Handle, buffer, len + 2, HAL_MAX_DELAY);
+	return HAL_UART_Transmit_IT(&UART_Handle, buffer, len + 2);
 }
 
 // A crude way to read and get an idea of how many bytes were sent/available.
@@ -157,7 +157,7 @@ int ESP8266::ReceiveResponse(uint32_t Timeout)
 		//		if (buffer[count - 1] == 'K' && count > 1 && buffer[count - 2] == 'O') 
 		//			break;
 		
-				status = HAL_UART_Receive(&UART_Handle, &(buffer[count]), 1, Timeout);      // 50 mS just to get some response.
+				status = HAL_UART_Receive_IT(&UART_Handle, &(buffer[count]), 1);      // 50 mS just to get some response.
 	}
 	
 	return count;
