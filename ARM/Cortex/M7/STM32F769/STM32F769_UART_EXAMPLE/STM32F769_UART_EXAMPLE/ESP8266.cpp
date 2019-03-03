@@ -50,7 +50,7 @@ void ESP8266::InitClocks()
 	__UART5_CLK_ENABLE();
 	__GPIOC_CLK_ENABLE();
 	__GPIOD_CLK_ENABLE();
-	__DMA1_CLK_ENABLE();
+	//__DMA1_CLK_ENABLE();
 	
 	clocks_initialized = true;
 }
