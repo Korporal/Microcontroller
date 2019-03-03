@@ -1,6 +1,35 @@
 #include <ESP8266.h>
 
+/*-----------------------------------------------------------------------------------*/
+/* This code was developed by extending and adapting the detailed example found here */
+/* https://visualgdb.com/tutorials/arm/stm32/uart/hal/                               */
+/* That example uses the Nucleo-F410RB board which uses an ARM STM32F410RB MCU.      */
+/* This implementation (currently) targets the STM32F769 DISCOVERY board which has a */
+/* ARM STMF769NI MCU.                                                                */
+/* The article progresses through three ways to use the UART, Polling, Interrupt and */
+/* DMA.                                                                              */
+/*-----------------------------------------------------------------------------------*/
+
+/*------------------------------ PERIPHERALS ----------------------------------------*/
+/* STMF4                                                                             */
+/* -----                                                                             */
+/* USART2                                                                            */
+/* GPIO PIN 2 on GPIO A -> UART TX                                                   */
+/* GPIO PIN 3 on GPIO A -> UART RX                                                   */
+/* DMA 1 ST 6 CH 4                                                                   */
+/*                                                                                   */
+/* STMF7                                                                             */
+/* -----                                                                             */
+/* UART5                                                                             */
+/* GPIO PIN 12 on GPIO C -> UART TX                                                  */
+/* GPIO PIN  2 on GPIO D -> UART RX                                                  */
+/* DMA 1 ST 7 CH 4                                                                   */
+/*                                                                                   */
+/*-----------------------------------------------------------------------------------*/
+
 static DMA_HandleTypeDef * GlobalHandle;
+
+
 
 
 bool ESP8266::clocks_initialized = false;
