@@ -8,6 +8,8 @@
 /* ARM STMF769NI MCU.                                                                */
 /* The article progresses through three ways to use the UART, Polling, Interrupt and */
 /* DMA.                                                                              */
+/* Note that in the article GPIO pins 10, 11 and 12 are associated with the use of   */
+/* the logic analyzer board, these are not part of the overall example itself.       */
 /*-----------------------------------------------------------------------------------*/
 
 /*------------------------------ PERIPHERALS ----------------------------------------*/
@@ -50,7 +52,7 @@ void ESP8266::InitClocks()
 	__UART5_CLK_ENABLE();
 	__GPIOC_CLK_ENABLE();
 	__GPIOD_CLK_ENABLE();
-	__DMA1_CLK_ENABLE();
+	//__DMA1_CLK_ENABLE();
 	
 	clocks_initialized = true;
 }

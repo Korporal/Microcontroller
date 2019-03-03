@@ -27,6 +27,9 @@ int Receive(UART_HandleTypeDef * UART, uint32_t Timeout);
 bool ContainsOK(uint8_t * Buffer, int Len);
 
 // A modified version of: https://visualgdb.com/tutorials/arm/stm32/uart/hal/
+	
+
+ESP8266 device; // Note, this does call empty arg constructor in C++
 
 int main(void)
 {
@@ -37,7 +40,6 @@ int main(void)
 	
 	HAL_Init();
  
-	ESP8266 device; // Note, this does call empty arg constructor in C++
 
 	for (I=0; I < 1000; I++)
 	{
@@ -95,4 +97,11 @@ void SysTick_Handler(void)
 {
 	HAL_IncTick();
 	HAL_SYSTICK_IRQHandler();
+}
+
+extern "C" void USART2_IRQHandler()
+{
+	//HAL_GPIO_WritePin(GPIOC, GPIO_PIN_12, GPIO_PIN_SET); // FOR USE BY ANALYZER in original article
+	HAL_UART_IRQHandler(&device.UART_Handle);
+	//HAL_GPIO_WritePin(GPIOC, GPIO_PIN_12, GPIO_PIN_RESET); // FOR USE BY ANALYZER in original article
 }

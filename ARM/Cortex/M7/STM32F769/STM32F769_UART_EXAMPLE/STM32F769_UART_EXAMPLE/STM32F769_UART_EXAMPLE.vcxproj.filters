@@ -659,5 +659,8 @@
     <ClInclude Include="ESP8266.h">
       <Filter>Header files</Filter>
     </ClInclude>
+    <ClInclude Include="PeripheralMappings.h">
+      <Filter>Header files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
