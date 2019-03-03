@@ -9,7 +9,6 @@ class ESP8266
 {
 private:
 	static bool clocks_initialized;
-	UART_HandleTypeDef UART_Handle = { };
 	DMA_HandleTypeDef DMA_Handle = { };
 	void InitDMA(DMA_HandleTypeDef * DMA_Handle);
 	void InitUART(UART_HandleTypeDef * UART_Handle);
@@ -18,6 +17,7 @@ private:
 
 public:
 	ESP8266();
+	UART_HandleTypeDef UART_Handle = { };
 	HAL_StatusTypeDef SendCommand(const char * Text);
 	int ReceiveResponse(uint32_t Timeout);
 	~ESP8266();
